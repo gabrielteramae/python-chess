@@ -2,7 +2,6 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)
 ![python-chess](https://img.shields.io/badge/python--chess-1.11.2-blue?style=flat)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat)
 ![Status](https://img.shields.io/badge/status-concluído-brightgreen?style=flat)
 
 Jogo de xadrez para dois jogadores, jogado diretamente no terminal, com validação completa das regras oficiais (roque, en passant, promoção, xeque-mate) usando a biblioteca [`python-chess`](https://python-chess.readthedocs.io/) e um tabuleiro renderizado com cores ANSI.
