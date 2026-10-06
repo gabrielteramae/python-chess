@@ -37,7 +37,7 @@ Lance (Pretas) >
 ```bash
 git clone https://github.com/gabrielteramae/python-chess.git
 cd python-chess
-pip install chess
+pip install -r requirements.txt
 python3 xadrez.py
 ```
 
