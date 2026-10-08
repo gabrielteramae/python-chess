@@ -1,64 +1,52 @@
-# ♟️ Python Chess — Jogo de Xadrez em Terminal
+# Python Chess — xadrez no terminal
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)
-![python-chess](https://img.shields.io/badge/python--chess-1.11.2-blue?style=flat)
-![Status](https://img.shields.io/badge/status-concluído-brightgreen?style=flat)
+![python-chess](https://img.shields.io/badge/python--chess-1.11.2-3776AB?logo=python&logoColor=white)
+![pytest](https://img.shields.io/badge/pytest-8.4.2-0A9EDC?logo=pytest&logoColor=white)
 
-Jogo de xadrez para dois jogadores, jogado diretamente no terminal, com validação completa das regras oficiais (roque, en passant, promoção, xeque-mate) usando a biblioteca [`python-chess`](https://python-chess.readthedocs.io/) e um tabuleiro renderizado com cores ANSI.
+Dois jogadores no mesmo computador. A biblioteca `chess` valida o lance; o script desenha o tabuleiro com peças Unicode e cor ANSI, lê UCI ou SAN e anuncia xeque, xeque-mate e os empates que `python-chess` detecta. Não há engine.
 
-## 🎮 Demonstração
+## Stack
+
+- `chess` 1.11.2 (`requirements.txt`)
+- pytest 8.4.2
+- ANSI no terminal; `cls` no Windows e `clear` nos outros
+- o repositório não fixa a versão do Python
+
+## Estrutura
 
 ```
-     a  b  c  d  e  f  g  h
-  8  ♜  ♞  ♝  ♛  ♚  ♝  ♞  ♜   8
-  7  ♟  ♟  ♟  ♟  ♟  ♟  ♟  ♟   7
-  6                          6
-  5                          5
-  4              ♙           4
-  3                          3
-  2  ♙  ♙  ♙  ♙     ♙  ♙  ♙   2
-  1  ♖  ♘  ♗  ♕  ♔  ♗  ♘  ♖   1
-     a  b  c  d  e  f  g  h
-
-Vez das Pretas.
-Lance (Pretas) >
+.
+├── xadrez.py              # tabuleiro, comandos e loop da partida
+├── requirements.txt
+└── tests/test_regras.py   # cinco casos de regra
 ```
 
-## ✨ Funcionalidades
+Entrada aceita UCI (`e2e4`, `e7e8q`) e SAN (`e4`, `Cf3`, `O-O`, `O-O-O`). Comandos: `ajuda`, `lances`, `desfazer`, `tabuleiro`, `historico`, `sair` (também `exit` e `quit`). O rei em xeque é pintado à parte. Fim de jogo cobre mate, afogamento, material insuficiente, 75 lances, repetição quíntupla e empate reivindicável (50 lances ou tripla repetição). `Ctrl+C` ou EOF encerra com código 0.
 
-- Tabuleiro colorido com peças em Unicode
-- Lances em notação **UCI** (`e2e4`) ou **SAN** (`e4`, `Cf3`, `O-O`)
-- Regras completas: roque, en passant, promoção de peão
-- Detecção de xeque, xeque-mate, afogamento e empates
-- Comandos auxiliares: `ajuda`, `lances`, `historico`, `desfazer`, `tabuleiro`, `sair`
-
-## 🚀 Como rodar
+## Como rodar
 
 ```bash
 git clone https://github.com/gabrielteramae/python-chess.git
 cd python-chess
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-python3 xadrez.py
+python xadrez.py
 ```
 
-## 🕹️ Como jogar
+## Testes realizados
 
-| Comando | Ação |
-|---|---|
-| `e2e4` | Move o peão de e2 para e4 (notação UCI) |
-| `Cf3` | Move o cavalo para f3 (notação SAN) |
-| `O-O` / `O-O-O` | Roque curto / roque longo |
-| `lances` | Lista todos os lances legais na posição atual |
-| `historico` | Mostra o histórico da partida |
-| `desfazer` | Desfaz o último lance |
-| `ajuda` | Mostra a lista de comandos |
-| `sair` | Encerra o jogo |
+`tests/test_regras.py` cobre `interpretar_lance` e `resultado_final`:
 
-## 🛠️ Tecnologias
+- `e2e5` na posição inicial é recusado; `e2e4` é aceito
+- mate do tolo em UCI (`f2f3`, `e7e5`, `g2g4`, `d8h4`) termina com “Xeque-mate! As Pretas vencem.”
+- `O-O` no FEN `r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1` coloca o rei em g1 e a torre em f1
+- en passant `e5d6` no FEN com peão branco em e5 e alvo d6 captura o peão de d5
+- `e7e8q` promove o peão branco a dama
 
-- **Python 3**
-- **[python-chess](https://pypi.org/project/chess/)** — validação de regras e geração de lances legais
-- Códigos ANSI para renderização colorida do tabuleiro no terminal
+```bash
+pytest -q
+```
 
 ---
 
